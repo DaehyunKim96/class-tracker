@@ -22,11 +22,15 @@ export async function signInWithGoogle(): Promise<{ user: FirebaseUser; isNew: b
   return { user: firebaseUser, isNew: false };
 }
 
-export async function completeSignUp(firebaseUser: FirebaseUser, role: User['role']): Promise<User> {
+export async function completeSignUp(
+  firebaseUser: FirebaseUser,
+  role: User['role'],
+  name: string,
+): Promise<User> {
   const user: User = {
     id: firebaseUser.uid,
     email: firebaseUser.email ?? '',
-    name: firebaseUser.displayName ?? '',
+    name,
     role,
   };
   await createUser(user);

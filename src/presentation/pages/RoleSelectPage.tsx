@@ -40,14 +40,33 @@ type Props = {
 
 export function RoleSelectPage({ firebaseUser }: Props) {
   const { setUser } = useAuth();
+  const [name, setName] = useState('');
   const [selected, setSelected] = useState<Role | null>(null);
   const [loading, setLoading] = useState(false);
+  const [nameError, setNameError] = useState('');
+
+  const isValid = name.trim().length >= 2 && selected !== null;
+
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
+    if (nameError) setNameError('');
+  }
+
+  function handleNameBlur() {
+    if (name.trim().length > 0 && name.trim().length < 2) {
+      setNameError('이름은 2자 이상 입력해주세요.');
+    }
+  }
 
   async function handleConfirm() {
-    if (!selected) return;
+    if (!isValid) return;
+    if (name.trim().length < 2) {
+      setNameError('이름은 2자 이상 입력해주세요.');
+      return;
+    }
     setLoading(true);
     try {
-      const user = await completeSignUp(firebaseUser, selected);
+      const user = await completeSignUp(firebaseUser, selected!, name.trim());
       setUser(user);
     } finally {
       setLoading(false);
@@ -58,33 +77,59 @@ export function RoleSelectPage({ firebaseUser }: Props) {
     <div className="role-page">
       <div className="role-card">
         <div className="role-card__header">
-          <p className="role-card__welcome">
-            안녕하세요, {firebaseUser.displayName?.split(' ')[0]}님
-          </p>
-          <h1 className="role-card__title">어떤 역할로 사용하실 건가요?</h1>
+          <p className="role-card__welcome">환영합니다</p>
+          <h1 className="role-card__title">프로필을 설정해주세요</h1>
         </div>
 
-        <div className="role-card__options">
-          {ROLES.map((r) => (
-            <button
-              key={r.role}
-              type="button"
-              className={`role-option${selected === r.role ? ' role-option--selected' : ''}`}
-              onClick={() => setSelected(r.role)}
-            >
-              <span className="role-option__icon">{r.icon}</span>
-              <div className="role-option__text">
-                <span className="role-option__label">{r.label}</span>
-                <span className="role-option__desc">{r.description}</span>
-              </div>
-              <span className="role-option__check" aria-hidden="true" />
-            </button>
-          ))}
+        <div className="role-card__name-section">
+          <label className="role-card__label" htmlFor="name-input">
+            이름 <span className="role-card__required">*</span>
+          </label>
+          <p className="role-card__label-hint">
+            학생 검색과 수업 기록에 사용됩니다. 본명(한글)을 입력해주세요.
+          </p>
+          <input
+            id="name-input"
+            type="text"
+            className={`role-card__input${nameError ? ' role-card__input--error' : ''}`}
+            placeholder="예) 김민지"
+            value={name}
+            onChange={handleNameChange}
+            onBlur={handleNameBlur}
+            maxLength={20}
+            autoComplete="off"
+          />
+          {nameError && (
+            <p className="role-card__field-error">{nameError}</p>
+          )}
+        </div>
+
+        <div className="role-card__role-section">
+          <label className="role-card__label">
+            역할 <span className="role-card__required">*</span>
+          </label>
+          <div className="role-card__options">
+            {ROLES.map((r) => (
+              <button
+                key={r.role}
+                type="button"
+                className={`role-option${selected === r.role ? ' role-option--selected' : ''}`}
+                onClick={() => setSelected(r.role)}
+              >
+                <span className="role-option__icon">{r.icon}</span>
+                <div className="role-option__text">
+                  <span className="role-option__label">{r.label}</span>
+                  <span className="role-option__desc">{r.description}</span>
+                </div>
+                <span className="role-option__check" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
         </div>
 
         <Button
           variant="primary-lg"
-          disabled={!selected || loading}
+          disabled={!isValid || loading}
           onClick={handleConfirm}
         >
           {loading ? '설정 중...' : '시작하기'}

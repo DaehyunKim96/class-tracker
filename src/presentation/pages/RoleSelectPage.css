@@ -39,6 +39,67 @@
   line-height: 1.2;
 }
 
+.role-card__name-section,
+.role-card__role-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.role-card__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-on-dark-soft);
+}
+
+.role-card__required {
+  color: var(--color-primary);
+  margin-left: 2px;
+}
+
+.role-card__label-hint {
+  font-size: 13px;
+  color: var(--color-on-dark-soft);
+  margin-top: -4px;
+  line-height: 1.5;
+}
+
+.role-card__input {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-base);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  color: var(--color-on-dark);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  outline: none;
+  transition: border-color 120ms ease;
+  box-sizing: border-box;
+}
+
+.role-card__input::placeholder {
+  color: var(--color-on-dark-soft);
+}
+
+.role-card__input:focus {
+  border-color: var(--color-primary);
+  background: rgba(79, 70, 229, 0.06);
+}
+
+.role-card__input--error {
+  border-color: #f87171;
+}
+
+.role-card__field-error {
+  font-size: 13px;
+  color: #f87171;
+  margin-top: -4px;
+}
+
 .role-card__options {
   display: flex;
   flex-direction: column;
