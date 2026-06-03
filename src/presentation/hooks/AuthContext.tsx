@@ -33,11 +33,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const user = await getUser(firebaseUser.uid);
-      if (!user) {
+      try {
+        const user = await getUser(firebaseUser.uid);
+        if (!user) {
+          setAuthState({ status: 'needs-role', firebaseUser });
+        } else {
+          setAuthState({ status: 'authenticated', firebaseUser, user });
+        }
+      } catch (err) {
+        console.error('[AuthContext] Firestore 접근 실패 — 보안 규칙을 확인하세요:', err);
+        // Firestore 권한 에러 시 needs-role로 fallback해서 검은 화면 방지
         setAuthState({ status: 'needs-role', firebaseUser });
-      } else {
-        setAuthState({ status: 'authenticated', firebaseUser, user });
       }
     });
 

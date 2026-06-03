@@ -79,6 +79,53 @@
   gap: var(--space-sm);
 }
 
+.top-nav__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.top-nav__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.top-nav__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.top-nav__user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+
+.top-nav--on-dark .top-nav__user-name {
+  color: var(--color-on-dark);
+}
+
+.top-nav__user-role {
+  font-size: 11px;
+  color: var(--color-muted);
+  line-height: 1.2;
+}
+
+.top-nav--on-dark .top-nav__user-role {
+  color: var(--color-on-dark-soft);
+}
+
 @media (max-width: 768px) {
   .top-nav__menu {
     display: none;

@@ -17,8 +17,18 @@ export function LoginPage({ onNewUser }: Props) {
     try {
       const { isNew, user } = await signInWithGoogle();
       if (isNew) onNewUser(user);
-    } catch {
-      setError('로그인에 실패했습니다. 다시 시도해 주세요.');
+    } catch (err) {
+      console.error('[LoginPage] Google login failed:', err);
+      const code = (err as { code?: string }).code ?? '';
+      if (code === 'auth/popup-blocked') {
+        setError('팝업이 차단됐습니다. 브라우저 팝업 허용 후 다시 시도해 주세요.');
+      } else if (code === 'auth/popup-closed-by-user') {
+        setError('로그인 창이 닫혔습니다. 다시 시도해 주세요.');
+      } else if (code === 'auth/configuration-not-found') {
+        setError('Firebase Google 로그인이 비활성화 상태입니다. 콘솔에서 활성화해주세요.');
+      } else {
+        setError(`로그인 실패: ${code || '알 수 없는 오류'}`);
+      }
     } finally {
       setLoading(false);
     }
