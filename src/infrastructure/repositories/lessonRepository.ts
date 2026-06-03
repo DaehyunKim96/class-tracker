@@ -32,6 +32,7 @@ const toLesson = (id: string, data: LessonDoc): Lesson => ({
   subject: data.subject,
   status: data.status,
   content: data.content,
+  createdBy: data.createdBy,
   createdAt: data.createdAt.toDate().toISOString(),
   updatedAt: data.updatedAt.toDate().toISOString(),
 });
