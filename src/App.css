@@ -1,1 +1,4 @@
-/* App-level styles intentionally minimal — every component owns its CSS. */
+.app-loading {
+  min-height: 100vh;
+  background: var(--color-surface-dark);
+}
