@@ -1,0 +1,233 @@
+.hero {
+  width: 100%;
+  padding: var(--space-section) 0;
+  overflow: hidden;
+}
+
+.hero--dark {
+  background: var(--color-surface-dark);
+  color: var(--color-on-dark);
+}
+
+.hero__inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xxl);
+  align-items: center;
+}
+
+.hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.hero__eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-dark-soft);
+}
+
+.hero__title {
+  color: var(--color-on-dark);
+  margin: 0;
+}
+
+.hero__sub {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--color-on-dark-soft);
+  max-width: 460px;
+}
+
+.hero__cta {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+/* ── Visual: layered cards ───────────────────────────────────── */
+.hero__visual {
+  position: relative;
+  min-height: 400px;
+}
+
+.hero__card {
+  background: var(--color-surface-dark-elevated);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  color: var(--color-on-dark);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.hero__card--front {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 100%;
+  max-width: 460px;
+  transform: rotate(-1.5deg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+.hero__card--back {
+  position: absolute;
+  right: 60px;
+  top: -10px;
+  width: 220px;
+  transform: rotate(4deg);
+  z-index: 1;
+  opacity: 0.95;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.hero__back-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-on-dark-soft);
+}
+
+.hero__back-number {
+  font-family: var(--font-mono);
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-on-dark);
+}
+
+.hero__back-caption {
+  font-size: 14px;
+  color: var(--color-on-dark-soft);
+}
+
+/* ── Front card content ──────────────────────────────────────── */
+.hero__card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.hero__card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-on-dark);
+}
+
+.hero__badge {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-on-dark-soft);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.hero__lesson-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-base);
+}
+
+.hero__lesson-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto;
+  align-items: center;
+  gap: var(--space-base);
+  padding-top: var(--space-base);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero__lesson-row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.hero__day {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-dark-soft);
+}
+
+.hero__time {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-dark);
+}
+
+.hero__subject {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-on-dark);
+}
+
+.hero__status {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero__status--completed {
+  color: #34d399;
+}
+
+.hero__status--scheduled {
+  color: #a5b4fc;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero__title {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--space-xxl) 0 var(--space-section);
+  }
+
+  .hero__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-xxl);
+  }
+
+  .hero__title {
+    font-size: 44px;
+  }
+
+  .hero__sub {
+    font-size: 16px;
+  }
+
+  .hero__visual {
+    min-height: 360px;
+  }
+
+  .hero__card--back {
+    display: none;
+  }
+
+  .hero__card--front {
+    position: static;
+    transform: none;
+    max-width: 100%;
+  }
+}
