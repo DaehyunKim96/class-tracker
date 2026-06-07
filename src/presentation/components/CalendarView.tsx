@@ -10,6 +10,7 @@ type Props = {
   events: CalendarEvent[];
   onSelectSlot?: (slot: SlotInfo) => void;
   onSelectEvent?: (lesson: Lesson) => void;
+  onNavigate?: (date: Date) => void;
   selectable?: boolean;
 };
 
@@ -19,9 +20,14 @@ const STATUS_COLOR: Record<Lesson['status'], string> = {
   cancelled: 'var(--color-cancelled)',
 };
 
-export function CalendarView({ events, onSelectSlot, onSelectEvent, selectable = false }: Props) {
+export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, selectable = false }: Props) {
   const [view, setView] = useState<View>(Views.MONTH);
   const [date, setDate] = useState(new Date());
+
+  const handleNavigate = useCallback((d: Date) => {
+    setDate(d);
+    onNavigate?.(d);
+  }, [onNavigate]);
 
   const eventPropGetter = useCallback((event: CalendarEvent) => {
     const status = event.resource.status;
@@ -55,7 +61,7 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, selectable =
         view={view}
         date={date}
         onView={setView}
-        onNavigate={setDate}
+        onNavigate={handleNavigate}
         onSelectSlot={onSelectSlot}
         onSelectEvent={handleSelectEvent}
         selectable={selectable}

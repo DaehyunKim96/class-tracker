@@ -7,6 +7,12 @@
   background: var(--color-canvas);
 }
 
+.page__banner-zone {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-base) 0;
+}
+
 .section {
   width: 100%;
   padding: var(--space-section) 0;
@@ -43,6 +49,18 @@
 
 .section__title {
   margin: 0;
+}
+
+.section__loading,
+.section__empty,
+.section__error {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-base);
+}
+
+.section__error {
+  color: var(--color-cancelled);
 }
 
 /* ── Calendar ────────────────────────────────────────────────── */

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { listLessonsByDateRange } from '../../infrastructure/repositories/lessonRepository';
-import type { Lesson } from '../../application/domain';
+import { listVisibleLessons } from '../../application/services/lessonService';
+import type { Lesson, User } from '../../application/domain';
 
 type UseLessonsResult = {
   lessons: Lesson[];
@@ -10,8 +10,7 @@ type UseLessonsResult = {
 };
 
 export function useLessons(
-  teacherId: string,
-  studentId: string | null,
+  user: User | null,
   fromDate: string,
   toDate: string,
 ): UseLessonsResult {
@@ -21,21 +20,22 @@ export function useLessons(
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (!studentId) {
+    if (!user) {
       setLessons([]);
       setLoading(false);
       return;
     }
 
     setLoading(true);
-    listLessonsByDateRange(studentId, fromDate, toDate)
+    setError(null);
+    listVisibleLessons(user, fromDate, toDate)
       .then(setLessons)
       .catch((err) => {
         console.error('[useLessons]', err);
         setError('수업 데이터를 불러오지 못했습니다.');
       })
       .finally(() => setLoading(false));
-  }, [teacherId, studentId, fromDate, toDate, tick]);
+  }, [user, fromDate, toDate, tick]);
 
   return { lessons, loading, error, reload: () => setTick((t) => t + 1) };
 }

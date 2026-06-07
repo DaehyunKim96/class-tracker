@@ -1,0 +1,77 @@
+.invitation-banner {
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: var(--radius-lg);
+  padding: var(--space-base) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.invitation-banner__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.invitation-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent-amber);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.invitation-banner__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.invitation-banner__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.invitation-banner__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-base);
+  padding: var(--space-sm) var(--space-base);
+  background: #fff;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+}
+
+.invitation-banner__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.invitation-banner__teacher {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.invitation-banner__subjects {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.invitation-banner__actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}

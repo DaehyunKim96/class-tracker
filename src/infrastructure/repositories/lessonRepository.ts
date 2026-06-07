@@ -5,7 +5,6 @@ import {
   getDocs,
   query,
   where,
-  orderBy,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -37,19 +36,14 @@ const toLesson = (id: string, data: LessonDoc): Lesson => ({
   updatedAt: data.updatedAt.toDate().toISOString(),
 });
 
-export async function listLessonsByDateRange(
-  studentId: string,
-  fromDate: string,
-  toDate: string,
-): Promise<Lesson[]> {
-  const q = query(
-    collection(db, COLLECTION),
-    where('studentId', '==', studentId),
-    where('date', '>=', fromDate),
-    where('date', '<=', toDate),
-    orderBy('date'),
-    orderBy('startTime'),
-  );
+export async function listLessonsByStudent(studentId: string): Promise<Lesson[]> {
+  const q = query(collection(db, COLLECTION), where('studentId', '==', studentId));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => toLesson(d.id, d.data() as LessonDoc));
+}
+
+export async function listLessonsByTeacher(teacherId: string): Promise<Lesson[]> {
+  const q = query(collection(db, COLLECTION), where('teacherId', '==', teacherId));
   const snap = await getDocs(q);
   return snap.docs.map((d) => toLesson(d.id, d.data() as LessonDoc));
 }

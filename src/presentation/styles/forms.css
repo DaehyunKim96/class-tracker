@@ -1,0 +1,100 @@
+/* ── Modal ────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-base);
+}
+
+.modal-card {
+  background: var(--color-canvas);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.modal-card__error {
+  font-size: 0.875rem;
+  color: var(--color-cancelled);
+  margin: 0;
+}
+
+.modal-card__actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+/* ── Field ────────────────────────────────────────────── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-body-strong);
+}
+
+.field-input {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1.5px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.field-input:focus {
+  border-color: var(--color-primary);
+}
+
+/* ── Role toggle ──────────────────────────────────────── */
+.role-toggle {
+  display: flex;
+  border: 1.5px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.role-toggle__btn {
+  flex: 1;
+  padding: var(--space-xs) var(--space-sm);
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-body);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.role-toggle__btn--active {
+  background: var(--color-primary);
+  color: #fff;
+}

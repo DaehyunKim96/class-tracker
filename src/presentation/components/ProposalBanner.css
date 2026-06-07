@@ -1,0 +1,97 @@
+.proposal-banner {
+  background: #ecfdf5;
+  border: 1.5px solid #a7f3d0;
+  border-radius: var(--radius-lg);
+  padding: var(--space-base) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-base);
+}
+
+.proposal-banner__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.proposal-banner__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--color-completed);
+  color: #fff;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.proposal-banner__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #065f46;
+}
+
+.proposal-banner__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.proposal-banner__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-base);
+  padding: var(--space-sm) var(--space-base);
+  background: #fff;
+  border: 1px solid #a7f3d0;
+  border-radius: var(--radius-md);
+}
+
+.proposal-banner__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.proposal-banner__primary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xxs);
+}
+
+.proposal-banner__proposer {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.proposal-banner__subject {
+  font-size: 0.8125rem;
+  color: var(--color-body);
+}
+
+.proposal-banner__time {
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.proposal-banner__memo {
+  font-size: 0.8125rem;
+  color: var(--color-body);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.proposal-banner__actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}

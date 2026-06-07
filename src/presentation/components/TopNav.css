@@ -73,6 +73,11 @@
   color: var(--color-primary);
 }
 
+.top-nav__link--active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
 .top-nav__cta {
   display: flex;
   align-items: center;

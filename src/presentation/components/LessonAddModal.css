@@ -1,0 +1,97 @@
+.lesson-modal {
+  max-width: 480px;
+}
+
+.field-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.field-group--half {
+  flex: 1;
+}
+
+.field-textarea {
+  resize: vertical;
+  font-family: var(--font-sans);
+  min-height: 64px;
+}
+
+/* ── Subject chips ────────────────────────────────────── */
+.subject-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xxs);
+  align-items: center;
+}
+
+.subject-chip {
+  padding: var(--space-xxs) var(--space-sm);
+  border: 1.5px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  background: var(--color-canvas);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-body);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.subject-chip:hover {
+  border-color: var(--color-primary);
+}
+
+.subject-chip--active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.subject-chips__custom {
+  flex: 1;
+  min-width: 120px;
+  padding: var(--space-xxs) var(--space-sm);
+  font-size: 0.8125rem;
+}
+
+/* ── Delete action ────────────────────────────────────── */
+.modal-card__actions--split {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-card__actions-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.modal-card__actions-right {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.modal-card__delete-link {
+  background: none;
+  border: none;
+  color: var(--color-cancelled);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: var(--space-xs) 0;
+}
+
+.modal-card__delete-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.modal-card__delete-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-card__delete-confirm {
+  font-size: 0.875rem;
+  color: var(--color-cancelled);
+  font-weight: 500;
+}
