@@ -73,19 +73,25 @@ function SubjectInput({ value, onChange }: SubjectInputProps) {
 
 type InviteModalProps = {
   user: User;
+  students: Student[];
   onClose: () => void;
   onSent: () => void;
   teacherId: string;
   teacherName: string;
 };
 
-function InviteModal({ user, onClose, onSent, teacherId, teacherName }: InviteModalProps) {
+function InviteModal({ user, students, onClose, onSent, teacherId, teacherName }: InviteModalProps) {
   const [role, setRole] = useState<'student' | 'parent'>('student');
+  const [linkedStudentId, setLinkedStudentId] = useState(students[0]?.id ?? '');
   const [subjects, setSubjects] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleSend() {
+    if (role === 'parent' && !linkedStudentId) {
+      setError('연결할 학생을 선택해 주세요.');
+      return;
+    }
     if (subjects.length === 0) {
       setError('과목을 하나 이상 입력해 주세요.');
       return;
@@ -93,7 +99,13 @@ function InviteModal({ user, onClose, onSent, teacherId, teacherName }: InviteMo
     setLoading(true);
     setError('');
     try {
-      await sendInvitation({ id: teacherId, name: teacherName }, user.id, role, subjects);
+      await sendInvitation(
+        { id: teacherId, name: teacherName },
+        user.id,
+        role,
+        subjects,
+        role === 'parent' ? linkedStudentId : undefined,
+      );
       onSent();
     } catch (e) {
       setError(e instanceof Error ? e.message : '초대 중 오류가 발생했습니다.');
@@ -130,6 +142,27 @@ function InviteModal({ user, onClose, onSent, teacherId, teacherName }: InviteMo
             </button>
           </div>
         </div>
+
+        {role === 'parent' && (
+          <div className="field-group">
+            <label className="field-label">연결할 학생</label>
+            {students.length === 0 ? (
+              <p className="modal-card__error">먼저 학생을 등록해 주세요.</p>
+            ) : (
+              <select
+                className="field-input"
+                value={linkedStudentId}
+                onChange={(e) => setLinkedStudentId(e.target.value)}
+              >
+                {students.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        )}
 
         <div className="field-group">
           <label className="field-label">과목</label>
@@ -334,6 +367,7 @@ export function StudentManagePage() {
       {selectedUser && (
         <InviteModal
           user={selectedUser}
+          students={students}
           teacherId={teacher.id}
           teacherName={teacher.name}
           onClose={() => setSelectedUser(null)}

@@ -10,6 +10,8 @@ import { LessonDetailModal } from '../components/LessonDetailModal';
 import { ProposalModal } from '../components/ProposalModal';
 import { ProposalBanner } from '../components/ProposalBanner';
 import { ProposalDetailModal } from '../components/ProposalDetailModal';
+import { ParentConnectModal } from '../components/ParentConnectModal';
+import { StudentConnectModal } from '../components/StudentConnectModal';
 import { useAuth } from '../hooks/AuthContext';
 import { useLessons } from '../hooks/useLessons';
 import { useProposals } from '../hooks/useProposals';
@@ -46,8 +48,10 @@ type ModalState =
   | { kind: 'add'; date: string; startTime?: string; endTime?: string }
   | { kind: 'edit'; lesson: Lesson }
   | { kind: 'view'; lesson: Lesson }
-  | { kind: 'propose'; date?: string }
-  | { kind: 'proposal-detail'; proposal: LessonProposal };
+  | { kind: 'propose'; date?: string; startTime?: string; endTime?: string }
+  | { kind: 'proposal-detail'; proposal: LessonProposal }
+  | { kind: 'parent-connect' }
+  | { kind: 'student-connect' };
 
 export function CalendarPage() {
   const { authState } = useAuth();
@@ -99,7 +103,12 @@ export function CalendarPage() {
         endTime: isSingleDay ? timeToHHMM(end) : undefined,
       });
     } else if (user && (user.role === 'student' || user.role === 'parent')) {
-      setModal({ kind: 'propose', date: dateToISO(start) });
+      setModal({
+        kind: 'propose',
+        date: dateToISO(start),
+        startTime: isSingleDay ? timeToHHMM(start) : undefined,
+        endTime: isSingleDay ? timeToHHMM(end) : undefined,
+      });
     }
   }
 
@@ -150,12 +159,30 @@ export function CalendarPage() {
                 </Button>
               ) : (
                 user && (
-                  <Button
-                    variant="primary"
-                    onClick={() => setModal({ kind: 'propose' })}
-                  >
-                    + 수업 제안
-                  </Button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    {user.role === 'student' && (
+                      <Button
+                        variant="secondary-light"
+                        onClick={() => setModal({ kind: 'parent-connect' })}
+                      >
+                        학부모 연결
+                      </Button>
+                    )}
+                    {user.role === 'parent' && (
+                      <Button
+                        variant="secondary-light"
+                        onClick={() => setModal({ kind: 'student-connect' })}
+                      >
+                        학생 연결
+                      </Button>
+                    )}
+                    <Button
+                      variant="primary"
+                      onClick={() => setModal({ kind: 'propose' })}
+                    >
+                      + 수업 제안
+                    </Button>
+                  </div>
                 )
               )}
             </header>
@@ -249,6 +276,8 @@ export function CalendarPage() {
           user={user}
           defaultDate={modal.date}
           onClose={() => setModal({ kind: 'closed' })}
+          defaultStartTime={modal.startTime}
+          defaultEndTime={modal.endTime}
           onSubmitted={() => { setModal({ kind: 'closed' }); reloadProposals(); }}
         />
       )}
@@ -259,6 +288,22 @@ export function CalendarPage() {
           user={user}
           onClose={() => setModal({ kind: 'closed' })}
           onChanged={() => { setModal({ kind: 'closed' }); handleProposalChanged(); }}
+        />
+      )}
+
+      {modal.kind === 'parent-connect' && user && (
+        <ParentConnectModal
+          currentUser={user}
+          onClose={() => setModal({ kind: 'closed' })}
+          onSent={() => setModal({ kind: 'closed' })}
+        />
+      )}
+
+      {modal.kind === 'student-connect' && user && (
+        <StudentConnectModal
+          currentUser={user}
+          onClose={() => setModal({ kind: 'closed' })}
+          onSent={() => setModal({ kind: 'closed' })}
         />
       )}
     </>

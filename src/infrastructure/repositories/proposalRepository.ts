@@ -60,6 +60,14 @@ export async function getProposalsByProposer(
   return snap.docs.map((d) => toProposal(d.id, d.data() as ProposalDoc));
 }
 
+export async function getProposalsByStudent(
+  studentId: string,
+): Promise<LessonProposal[]> {
+  const q = query(collection(db, COLLECTION), where('studentId', '==', studentId));
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => toProposal(d.id, d.data() as ProposalDoc));
+}
+
 export async function updateProposalStatus(
   id: string,
   status: ProposalStatus,

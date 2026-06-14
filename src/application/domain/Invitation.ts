@@ -5,8 +5,11 @@ export type Invitation = {
   id: string;
   teacherId: string;
   teacherName: string;
+  senderName?: string;
+  parentUid?: string;
   inviteeUid: string;
   inviteeRole: InviteeRole;
+  studentId?: string;
   subjects: string[];
   status: InvitationStatus;
   createdAt: string;

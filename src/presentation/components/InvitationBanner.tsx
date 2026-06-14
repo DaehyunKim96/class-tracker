@@ -60,9 +60,19 @@ export function InvitationBanner() {
         {invitations.map((inv) => (
           <li key={inv.id} className="invitation-banner__item">
             <div className="invitation-banner__info">
-              <span className="invitation-banner__teacher">{inv.teacherName} 선생님</span>
+              <span className="invitation-banner__teacher">
+                {inv.senderName
+                  ? inv.inviteeRole === 'parent'
+                    ? `${inv.senderName} (학생)`
+                    : `${inv.senderName} (학부모)`
+                  : `${inv.teacherName} 선생님`}
+              </span>
               <span className="invitation-banner__subjects">
-                {inv.inviteeRole === 'student' ? '학생' : '학부모'} · {inv.subjects.join(', ')}
+                {inv.parentUid
+                  ? `학부모 연결 요청 · ${inv.subjects.join(', ')}`
+                  : inv.inviteeRole === 'student'
+                    ? `학생 · ${inv.subjects.join(', ')}`
+                    : `학부모 · ${inv.subjects.join(', ')}`}
               </span>
             </div>
             <div className="invitation-banner__actions">

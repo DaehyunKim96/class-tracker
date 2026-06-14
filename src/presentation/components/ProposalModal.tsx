@@ -7,18 +7,20 @@ import './ProposalModal.css';
 type Props = {
   user: User;
   defaultDate?: string;
+  defaultStartTime?: string;
+  defaultEndTime?: string;
   onClose: () => void;
   onSubmitted: () => void;
 };
 
-export function ProposalModal({ user, defaultDate, onClose, onSubmitted }: Props) {
+export function ProposalModal({ user, defaultDate, defaultStartTime, defaultEndTime, onClose, onSubmitted }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const [students, setStudents] = useState<Student[]>([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
   const [studentId, setStudentId] = useState('');
   const [date, setDate] = useState(defaultDate ?? today);
-  const [startTime, setStartTime] = useState('19:00');
-  const [endTime, setEndTime] = useState('20:30');
+  const [startTime, setStartTime] = useState(defaultStartTime ?? '19:00');
+  const [endTime, setEndTime] = useState(defaultEndTime ?? '20:30');
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');

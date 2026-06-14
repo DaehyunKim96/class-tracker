@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/client';
 import type { Invitation, InvitationStatus } from '../../application/domain';
+import { stripUndefined } from './utils';
 
 const COLLECTION = 'invitations';
 
@@ -22,8 +23,11 @@ const toInvitation = (id: string, data: InvitationDoc): Invitation => ({
   id,
   teacherId: data.teacherId,
   teacherName: data.teacherName,
+  senderName: data.senderName,
+  parentUid: data.parentUid,
   inviteeUid: data.inviteeUid,
   inviteeRole: data.inviteeRole,
+  studentId: data.studentId,
   subjects: data.subjects,
   status: data.status,
   createdAt: data.createdAt.toDate().toISOString(),
@@ -33,7 +37,7 @@ export async function createInvitation(
   data: Omit<Invitation, 'id' | 'createdAt'>,
 ): Promise<string> {
   const ref = await addDoc(collection(db, COLLECTION), {
-    ...data,
+    ...stripUndefined(data),
     createdAt: serverTimestamp(),
   });
   return ref.id;
