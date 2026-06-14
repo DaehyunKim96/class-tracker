@@ -30,7 +30,7 @@ function isMobileScreen() {
 }
 
 export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, selectable = false }: Props) {
-  const [view, setView] = useState<View>(() => isMobileScreen() ? Views.DAY : Views.WEEK);
+  const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
 
   const handleNavigate = useCallback((d: Date) => {
