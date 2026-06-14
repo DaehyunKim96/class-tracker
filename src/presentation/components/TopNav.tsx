@@ -21,6 +21,7 @@ export function TopNav({ variant = 'light' }: Props) {
     { label: '숙제', to: '/homework' },
     { label: '공지', to: '/announcements' },
     { label: '학생', to: '/students', teacherOnly: true },
+    { label: '통계', to: '/stats' },
   ];
 
   const visibleItems = navItems.filter(

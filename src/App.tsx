@@ -7,6 +7,7 @@ import { RoleSelectPage } from './presentation/pages/RoleSelectPage';
 import { StudentManagePage } from './presentation/pages/StudentManagePage';
 import { HomeworkPage } from './presentation/pages/HomeworkPage';
 import { AnnouncementsPage } from './presentation/pages/AnnouncementsPage';
+import { StatisticsPage } from './presentation/pages/StatisticsPage';
 import { BottomNav } from './presentation/components/BottomNav';
 
 function AppRoutes() {
@@ -38,6 +39,7 @@ function AppRoutes() {
         />
         <Route path="/homework" element={<HomeworkPage />} />
         <Route path="/announcements" element={<AnnouncementsPage />} />
+        <Route path="/stats" element={<StatisticsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <BottomNav />
