@@ -6,7 +6,7 @@ import { searchUsersByName } from '../../infrastructure/repositories/userReposit
 import {
   getInvitationsByTeacher,
 } from '../../infrastructure/repositories/invitationRepository';
-import { getStudentsByTeacher } from '../../infrastructure/repositories/studentRepository';
+import { getStudentsByTeacher, deleteStudent } from '../../infrastructure/repositories/studentRepository';
 import { sendInvitation } from '../../application/services/invitationService';
 import { maskEmail } from '../../shared/maskEmail';
 import type { User, Invitation, Student } from '../../application/domain';
@@ -102,6 +102,7 @@ function InviteModal({ user, students, onClose, onSent, teacherId, teacherName }
       await sendInvitation(
         { id: teacherId, name: teacherName },
         user.id,
+        user.name,
         role,
         subjects,
         role === 'parent' ? linkedStudentId : undefined,
@@ -199,6 +200,8 @@ export function StudentManagePage() {
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [successMsg, setSuccessMsg] = useState('');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [showPastInvitations, setShowPastInvitations] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   if (authState.status !== 'authenticated') return null;
@@ -238,6 +241,17 @@ export function StudentManagePage() {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, [query, teacher.id]);
+
+  async function handleDeleteStudent(studentId: string, name: string) {
+    if (!confirm(`${name} 학생을 삭제할까요?\n삭제하면 해당 학생과의 연결이 끊어집니다.`)) return;
+    setDeletingId(studentId);
+    try {
+      await deleteStudent(studentId);
+      await loadData();
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   function handleInviteSent() {
     setSelectedUser(null);
@@ -312,6 +326,15 @@ export function StudentManagePage() {
                       <span className="student-list__name">{s.name}</span>
                       <span className="student-list__subjects">{s.subjects.join(', ')}</span>
                     </div>
+                    <button
+                      type="button"
+                      className="student-list__delete"
+                      onClick={() => handleDeleteStudent(s.id, s.name)}
+                      disabled={deletingId === s.id}
+                      aria-label={`${s.name} 삭제`}
+                    >
+                      {deletingId === s.id ? '...' : '×'}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -342,23 +365,38 @@ export function StudentManagePage() {
 
           {/* Past Invitations */}
           {pastInvitations.length > 0 && (
-            <section className="smp-section">
-              <h2 className="smp-section__title">지난 초대</h2>
-              <ul className="invitation-list">
-                {pastInvitations.map((inv) => (
-                  <li key={inv.id} className={`invitation-item invitation-item--${inv.status}`}>
-                    <div className="invitation-item__info">
-                      <span className="invitation-item__role">
-                        {inv.inviteeRole === 'student' ? '학생' : '학부모'}
+            <section className="smp-section smp-section--collapsible">
+              <button
+                type="button"
+                className="smp-collapse-toggle"
+                onClick={() => setShowPastInvitations((v) => !v)}
+                aria-expanded={showPastInvitations}
+              >
+                <span>지난 초대 ({pastInvitations.length})</span>
+                <span className={`smp-collapse-toggle__chevron ${showPastInvitations ? 'smp-collapse-toggle__chevron--open' : ''}`}>
+                  ▾
+                </span>
+              </button>
+              {showPastInvitations && (
+                <ul className="invitation-list">
+                  {pastInvitations.map((inv) => (
+                    <li key={inv.id} className={`invitation-item invitation-item--${inv.status}`}>
+                      <div className="invitation-item__info">
+                        <span className="invitation-item__name">
+                          {inv.inviteeName ?? '(이름 없음)'}
+                          <span className="invitation-item__role-badge">
+                            {inv.inviteeRole === 'student' ? '학생' : '학부모'}
+                          </span>
+                        </span>
+                        <span className="invitation-item__subjects">{inv.subjects.join(', ')}</span>
+                      </div>
+                      <span className={`invitation-item__status invitation-item__status--${inv.status}`}>
+                        {STATUS_LABEL[inv.status]}
                       </span>
-                      <span className="invitation-item__subjects">{inv.subjects.join(', ')}</span>
-                    </div>
-                    <span className={`invitation-item__status invitation-item__status--${inv.status}`}>
-                      {STATUS_LABEL[inv.status]}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </section>
           )}
         </div>

@@ -26,6 +26,7 @@ const toInvitation = (id: string, data: InvitationDoc): Invitation => ({
   senderName: data.senderName,
   parentUid: data.parentUid,
   inviteeUid: data.inviteeUid,
+  inviteeName: data.inviteeName,
   inviteeRole: data.inviteeRole,
   studentId: data.studentId,
   subjects: data.subjects,

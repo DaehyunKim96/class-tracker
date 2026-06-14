@@ -194,6 +194,71 @@
   color: var(--color-muted);
 }
 
+.student-list__delete {
+  margin-left: auto;
+  background: #fee2e2;
+  border: none;
+  color: var(--color-cancelled);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.student-list__delete:hover:not(:disabled) {
+  background: #fecaca;
+  color: #7f1d1d;
+}
+
+.student-list__delete:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Collapsible section ──────────────────────────────── */
+.smp-section--collapsible {
+  gap: 0;
+  padding: 0;
+}
+
+.smp-collapse-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: left;
+  gap: var(--space-xs);
+}
+
+.smp-collapse-toggle:hover {
+  color: var(--color-primary);
+}
+
+.smp-collapse-toggle__chevron {
+  font-size: 1rem;
+  color: var(--color-muted);
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.smp-collapse-toggle__chevron--open {
+  transform: rotate(180deg);
+}
+
+.smp-section--collapsible .invitation-list {
+  padding: 0 var(--space-lg) var(--space-lg);
+}
+
 /* ── Invitation list ──────────────────────────────────── */
 .invitation-list {
   list-style: none;
@@ -220,10 +285,22 @@
   gap: 2px;
 }
 
-.invitation-item__role {
-  font-size: 0.875rem;
+.invitation-item__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-ink);
+}
+
+.invitation-item__role-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted);
+  background: var(--color-surface-strong);
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
 }
 
 .invitation-item__subjects {

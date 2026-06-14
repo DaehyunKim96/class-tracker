@@ -9,20 +9,24 @@ import type { Invitation, InviteeRole, User, Student } from '../domain';
 export async function sendInvitation(
   teacher: { id: string; name: string },
   inviteeUid: string,
+  inviteeName: string,
   inviteeRole: InviteeRole,
   subjects: string[],
   studentId?: string,
 ): Promise<void> {
   const existing = await getInvitationsByTeacher(teacher.id);
-  const hasPending = existing.some(
-    (inv) => inv.inviteeUid === inviteeUid && inv.status === 'pending',
+  const alreadySent = existing.some(
+    (inv) =>
+      inv.inviteeUid === inviteeUid &&
+      (inv.status === 'pending' || inv.status === 'accepted'),
   );
-  if (hasPending) throw new Error('이미 초대장을 보낸 사용자입니다.');
+  if (alreadySent) throw new Error('이미 초대했거나 수락된 사용자입니다.');
 
   await createInvitation({
     teacherId: teacher.id,
     teacherName: teacher.name,
     inviteeUid,
+    inviteeName,
     inviteeRole,
     studentId,
     subjects,

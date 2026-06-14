@@ -8,6 +8,7 @@ export type Invitation = {
   senderName?: string;
   parentUid?: string;
   inviteeUid: string;
+  inviteeName?: string;
   inviteeRole: InviteeRole;
   studentId?: string;
   subjects: string[];

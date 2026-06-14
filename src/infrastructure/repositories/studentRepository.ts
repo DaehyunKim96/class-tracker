@@ -5,6 +5,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
   serverTimestamp,
@@ -45,6 +46,10 @@ export async function createStudent(
     createdAt: serverTimestamp(),
   });
   return ref.id;
+}
+
+export async function deleteStudent(studentId: string): Promise<void> {
+  await deleteDoc(doc(db, COLLECTION, studentId));
 }
 
 export async function addParentToStudent(
