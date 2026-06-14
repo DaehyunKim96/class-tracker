@@ -54,9 +54,15 @@ export async function getLesson(id: string): Promise<Lesson | null> {
   return toLesson(snap.id, snap.data() as LessonDoc);
 }
 
+function stripUndefined<T extends object>(obj: T): T {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined),
+  ) as T;
+}
+
 export async function createLesson(draft: LessonDraft): Promise<string> {
   const ref = await addDoc(collection(db, COLLECTION), {
-    ...draft,
+    ...stripUndefined(draft),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
@@ -68,7 +74,7 @@ export async function updateLesson(
   patch: Partial<LessonDraft>,
 ): Promise<void> {
   await updateDoc(doc(db, COLLECTION, id), {
-    ...patch,
+    ...stripUndefined(patch),
     updatedAt: serverTimestamp(),
   });
 }

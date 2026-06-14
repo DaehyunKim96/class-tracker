@@ -20,8 +20,10 @@ const STATUS_COLOR: Record<Lesson['status'], string> = {
   cancelled: 'var(--color-cancelled)',
 };
 
+const SCROLL_TO_8AM = new Date(1970, 1, 1, 8, 0, 0);
+
 export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, selectable = false }: Props) {
-  const [view, setView] = useState<View>(Views.MONTH);
+  const [view, setView] = useState<View>(Views.WEEK);
   const [date, setDate] = useState(new Date());
 
   const handleNavigate = useCallback((d: Date) => {
@@ -66,6 +68,7 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, 
         onSelectEvent={handleSelectEvent}
         selectable={selectable}
         eventPropGetter={eventPropGetter}
+        scrollToTime={SCROLL_TO_8AM}
         popup
         style={{ height: 680 }}
         formats={{
