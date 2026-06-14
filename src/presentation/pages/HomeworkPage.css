@@ -177,3 +177,15 @@
 .hw-item__delete:hover {
   color: var(--color-cancelled);
 }
+
+@media (max-width: 480px) {
+  .homework-page__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .homework-page__header > * {
+    width: 100%;
+  }
+}

@@ -25,8 +25,12 @@ const PROPOSAL_COLOR = 'var(--color-accent-amber)';
 const MIN_TIME = new Date(1970, 1, 1, 8, 0, 0);
 const MAX_TIME = new Date(1970, 1, 1, 23, 59, 59);
 
+function isMobileScreen() {
+  return typeof window !== 'undefined' && window.innerWidth < 640;
+}
+
 export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, selectable = false }: Props) {
-  const [view, setView] = useState<View>(Views.WEEK);
+  const [view, setView] = useState<View>(() => isMobileScreen() ? Views.DAY : Views.WEEK);
   const [date, setDate] = useState(new Date());
 
   const handleNavigate = useCallback((d: Date) => {
@@ -87,7 +91,8 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, 
         min={MIN_TIME}
         max={MAX_TIME}
         popup
-        style={{ height: 680 }}
+        style={{ height: view === Views.AGENDA ? 'auto' : 680 }}
+        className={isMobileScreen() ? 'cal-view--mobile' : ''}
         formats={{
           monthHeaderFormat: (date) =>
             `${date.getFullYear()}년 ${date.getMonth() + 1}월`,

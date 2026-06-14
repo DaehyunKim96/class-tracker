@@ -180,3 +180,23 @@
   flex-wrap: wrap;
   gap: var(--space-xxs);
 }
+
+@media (max-width: 480px) {
+  .announcements-page__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .announcements-page__header > * {
+    width: 100%;
+  }
+
+  .ann-item__row {
+    padding: var(--space-sm) var(--space-base);
+  }
+
+  .ann-item__body {
+    padding: var(--space-sm) var(--space-base) var(--space-base);
+  }
+}

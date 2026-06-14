@@ -75,3 +75,20 @@
   gap: var(--space-xs);
   flex-shrink: 0;
 }
+
+@media (max-width: 480px) {
+  .invitation-banner {
+    padding: var(--space-sm) var(--space-base);
+  }
+
+  .invitation-banner__item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .invitation-banner__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

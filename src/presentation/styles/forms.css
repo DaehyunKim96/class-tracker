@@ -80,6 +80,33 @@
   border-color: var(--color-primary);
 }
 
+/* ── Mobile: bottom-sheet modal ───────────────────────── */
+@media (max-width: 639px) {
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-card {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-width: 100%;
+    max-height: 92vh;
+    padding: var(--space-lg) var(--space-base) calc(var(--space-lg) + env(safe-area-inset-bottom));
+    gap: var(--space-md);
+  }
+
+  .modal-card::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: var(--color-hairline);
+    border-radius: var(--radius-full);
+    margin: 0 auto var(--space-xs);
+    flex-shrink: 0;
+  }
+}
+
 /* ── Role toggle ──────────────────────────────────────── */
 .role-toggle {
   display: flex;

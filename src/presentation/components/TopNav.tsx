@@ -53,10 +53,9 @@ export function TopNav({ variant = 'light' }: Props) {
             <>
               <div className="top-nav__user">
                 <span className="top-nav__avatar">
-                  {authState.user.name?.[0] ?? '?'}
+                  {authState.user.name ?? '?'}
                 </span>
                 <span className="top-nav__user-info">
-                  <span className="top-nav__user-name">{authState.user.name}</span>
                   <span className="top-nav__user-role">
                     {ROLE_LABEL[authState.user.role]}
                   </span>

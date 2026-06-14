@@ -233,3 +233,10 @@ button {
 .on-dark-soft {
   color: var(--color-on-dark-soft);
 }
+
+/* ── Mobile bottom nav spacing ───────────────────────────────── */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+}

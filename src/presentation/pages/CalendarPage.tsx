@@ -149,17 +149,19 @@ export function CalendarPage() {
                 <h2 className="section__title t-display-sm">수업 일정</h2>
               </div>
               {isTeacher ? (
-                <Button
-                  variant="primary"
-                  onClick={() =>
-                    setModal({ kind: 'add', date: dateToISO(new Date()) })
-                  }
-                >
-                  + 수업 추가
-                </Button>
+                <div className="section__actions">
+                  <Button
+                    variant="primary"
+                    onClick={() =>
+                      setModal({ kind: 'add', date: dateToISO(new Date()) })
+                    }
+                  >
+                    + 수업 추가
+                  </Button>
+                </div>
               ) : (
                 user && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
+                  <div className="section__actions">
                     {user.role === 'student' && (
                       <Button
                         variant="secondary-light"

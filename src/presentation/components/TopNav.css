@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-xxl);
+  justify-content: space-between;
 }
 
 .top-nav__brand {
@@ -91,17 +92,17 @@
 }
 
 .top-nav__avatar {
-  width: 32px;
   height: 32px;
-  border-radius: var(--radius-full);
+  padding: 0 var(--space-sm);
+  border-radius: var(--radius-pill);
   background: var(--color-primary);
   color: var(--color-on-primary);
   font-size: 13px;
   font-weight: 600;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .top-nav__user-info {
@@ -134,5 +135,28 @@
 @media (max-width: 768px) {
   .top-nav__menu {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-nav {
+    height: 52px;
+  }
+
+  .top-nav__inner {
+    padding: 0 var(--space-base);
+    gap: var(--space-xs);
+  }
+
+  .top-nav__brand-name {
+    display: none;
+  }
+
+  .top-nav__user-info {
+    display: none;
+  }
+
+  .top-nav__cta {
+    gap: var(--space-xs);
   }
 }

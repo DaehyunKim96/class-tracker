@@ -95,3 +95,20 @@
   gap: var(--space-xs);
   flex-shrink: 0;
 }
+
+@media (max-width: 480px) {
+  .proposal-banner {
+    padding: var(--space-sm) var(--space-base);
+  }
+
+  .proposal-banner__item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  .proposal-banner__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

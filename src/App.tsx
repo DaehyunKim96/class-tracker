@@ -7,6 +7,7 @@ import { RoleSelectPage } from './presentation/pages/RoleSelectPage';
 import { StudentManagePage } from './presentation/pages/StudentManagePage';
 import { HomeworkPage } from './presentation/pages/HomeworkPage';
 import { AnnouncementsPage } from './presentation/pages/AnnouncementsPage';
+import { BottomNav } from './presentation/components/BottomNav';
 
 function AppRoutes() {
   const { authState } = useAuth();
@@ -24,20 +25,23 @@ function AppRoutes() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<CalendarPage />} />
-      <Route
-        path="/students"
-        element={
-          authState.user.role === 'teacher'
-            ? <StudentManagePage />
-            : <Navigate to="/" replace />
-        }
-      />
-      <Route path="/homework" element={<HomeworkPage />} />
-      <Route path="/announcements" element={<AnnouncementsPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<CalendarPage />} />
+        <Route
+          path="/students"
+          element={
+            authState.user.role === 'teacher'
+              ? <StudentManagePage />
+              : <Navigate to="/" replace />
+          }
+        />
+        <Route path="/homework" element={<HomeworkPage />} />
+        <Route path="/announcements" element={<AnnouncementsPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <BottomNav />
+    </>
   );
 }
 
