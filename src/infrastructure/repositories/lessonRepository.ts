@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/client';
 import type { Lesson, LessonDraft } from '../../application/domain';
+import { stripUndefined } from './utils';
 
 const COLLECTION = 'lessons';
 
@@ -52,12 +53,6 @@ export async function getLesson(id: string): Promise<Lesson | null> {
   const snap = await getDoc(doc(db, COLLECTION, id));
   if (!snap.exists()) return null;
   return toLesson(snap.id, snap.data() as LessonDoc);
-}
-
-function stripUndefined<T extends object>(obj: T): T {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v !== undefined),
-  ) as T;
 }
 
 export async function createLesson(draft: LessonDraft): Promise<string> {

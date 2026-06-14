@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase/client';
 import type { LessonProposal, ProposalStatus } from '../../application/domain';
+import { stripUndefined } from './utils';
 
 const COLLECTION = 'proposals';
 
@@ -37,7 +38,7 @@ export async function createProposal(
   data: Omit<LessonProposal, 'id' | 'createdAt'>,
 ): Promise<string> {
   const ref = await addDoc(collection(db, COLLECTION), {
-    ...data,
+    ...stripUndefined(data),
     createdAt: serverTimestamp(),
   });
   return ref.id;

@@ -9,7 +9,7 @@ import './CalendarView.css';
 type Props = {
   events: CalendarEvent[];
   onSelectSlot?: (slot: SlotInfo) => void;
-  onSelectEvent?: (lesson: Lesson) => void;
+  onSelectEvent?: (event: CalendarEvent) => void;
   onNavigate?: (date: Date) => void;
   selectable?: boolean;
 };
@@ -20,7 +20,10 @@ const STATUS_COLOR: Record<Lesson['status'], string> = {
   cancelled: 'var(--color-cancelled)',
 };
 
-const SCROLL_TO_8AM = new Date(1970, 1, 1, 8, 0, 0);
+const PROPOSAL_COLOR = 'var(--color-accent-amber)';
+
+const MIN_TIME = new Date(1970, 1, 1, 8, 0, 0);
+const MAX_TIME = new Date(1970, 1, 1, 23, 59, 59);
 
 export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, selectable = false }: Props) {
   const [view, setView] = useState<View>(Views.WEEK);
@@ -32,7 +35,20 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, 
   }, [onNavigate]);
 
   const eventPropGetter = useCallback((event: CalendarEvent) => {
-    const status = event.resource.status;
+    if (event.resource.kind === 'proposal') {
+      return {
+        style: {
+          backgroundColor: PROPOSAL_COLOR,
+          borderColor: PROPOSAL_COLOR,
+          borderRadius: '6px',
+          fontSize: '12px',
+          fontWeight: 500,
+          padding: '2px 6px',
+          border: 'none',
+        },
+      };
+    }
+    const status = event.resource.data.status;
     const color = STATUS_COLOR[status];
     return {
       style: {
@@ -50,7 +66,7 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, 
   }, []);
 
   const handleSelectEvent = useCallback((event: CalendarEvent) => {
-    onSelectEvent?.(event.resource);
+    onSelectEvent?.(event);
   }, [onSelectEvent]);
 
   return (
@@ -68,7 +84,8 @@ export function CalendarView({ events, onSelectSlot, onSelectEvent, onNavigate, 
         onSelectEvent={handleSelectEvent}
         selectable={selectable}
         eventPropGetter={eventPropGetter}
-        scrollToTime={SCROLL_TO_8AM}
+        min={MIN_TIME}
+        max={MAX_TIME}
         popup
         style={{ height: 680 }}
         formats={{

@@ -9,12 +9,18 @@ import { LessonAddModal } from '../components/LessonAddModal';
 import { LessonDetailModal } from '../components/LessonDetailModal';
 import { ProposalModal } from '../components/ProposalModal';
 import { ProposalBanner } from '../components/ProposalBanner';
+import { ProposalDetailModal } from '../components/ProposalDetailModal';
 import { useAuth } from '../hooks/AuthContext';
 import { useLessons } from '../hooks/useLessons';
+import { useProposals } from '../hooks/useProposals';
 import { useStudents } from '../hooks/useStudents';
-import { toCalendarEvents } from '../../application/services/lessonCalendarService';
+import {
+  toCalendarEvents,
+  toProposalCalendarEvents,
+  type CalendarEvent,
+} from '../../application/services/lessonCalendarService';
 import { monthRange } from '../../application/services/lessonService';
-import type { Lesson } from '../../application/domain';
+import type { Lesson, LessonProposal } from '../../application/domain';
 import './CalendarPage.css';
 
 const STATUS_LABEL: Record<Lesson['status'], string> = {
@@ -40,7 +46,8 @@ type ModalState =
   | { kind: 'add'; date: string; startTime?: string; endTime?: string }
   | { kind: 'edit'; lesson: Lesson }
   | { kind: 'view'; lesson: Lesson }
-  | { kind: 'propose'; date?: string };
+  | { kind: 'propose'; date?: string }
+  | { kind: 'proposal-detail'; proposal: LessonProposal };
 
 export function CalendarPage() {
   const { authState } = useAuth();
@@ -50,12 +57,16 @@ export function CalendarPage() {
   const [viewDate, setViewDate] = useState(new Date());
   const { fromDate, toDate } = useMemo(() => monthRange(viewDate), [viewDate]);
 
-  const { lessons, loading, error, reload } = useLessons(user, fromDate, toDate);
+  const { lessons, loading, error, reload: reloadLessons } = useLessons(user, fromDate, toDate);
+  const { proposals, reload: reloadProposals } = useProposals(user);
   const { students } = useStudents(isTeacher ? user!.id : null);
 
   const [modal, setModal] = useState<ModalState>({ kind: 'closed' });
 
-  const events = useMemo(() => toCalendarEvents(lessons), [lessons]);
+  const events = useMemo(
+    () => [...toCalendarEvents(lessons), ...toProposalCalendarEvents(proposals)],
+    [lessons, proposals],
+  );
 
   const studentNameById = useMemo(() => {
     const map = new Map<string, string>();
@@ -92,13 +103,23 @@ export function CalendarPage() {
     }
   }
 
-  function handleSelectEvent(lesson: Lesson) {
+  function handleSelectEvent(event: CalendarEvent) {
+    if (event.resource.kind === 'proposal') {
+      setModal({ kind: 'proposal-detail', proposal: event.resource.data });
+      return;
+    }
+    const lesson = event.resource.data;
     setModal(isTeacher ? { kind: 'edit', lesson } : { kind: 'view', lesson });
   }
 
-  function handleSaved() {
+  function handleLessonSaved() {
     setModal({ kind: 'closed' });
-    reload();
+    reloadLessons();
+  }
+
+  function handleProposalChanged() {
+    reloadLessons();
+    reloadProposals();
   }
 
   return (
@@ -108,7 +129,7 @@ export function CalendarPage() {
       <main className="page__main">
         <div className="page__banner-zone">
           <InvitationBanner />
-          <ProposalBanner onChanged={reload} />
+          <ProposalBanner onChanged={handleProposalChanged} />
         </div>
 
         <section className="section">
@@ -201,7 +222,7 @@ export function CalendarPage() {
           defaultStartTime={modal.startTime}
           defaultEndTime={modal.endTime}
           onClose={() => setModal({ kind: 'closed' })}
-          onSaved={handleSaved}
+          onSaved={handleLessonSaved}
         />
       )}
 
@@ -211,7 +232,7 @@ export function CalendarPage() {
           students={students}
           lesson={modal.lesson}
           onClose={() => setModal({ kind: 'closed' })}
-          onSaved={handleSaved}
+          onSaved={handleLessonSaved}
         />
       )}
 
@@ -228,7 +249,16 @@ export function CalendarPage() {
           user={user}
           defaultDate={modal.date}
           onClose={() => setModal({ kind: 'closed' })}
-          onSubmitted={() => setModal({ kind: 'closed' })}
+          onSubmitted={() => { setModal({ kind: 'closed' }); reloadProposals(); }}
+        />
+      )}
+
+      {modal.kind === 'proposal-detail' && user && (
+        <ProposalDetailModal
+          proposal={modal.proposal}
+          user={user}
+          onClose={() => setModal({ kind: 'closed' })}
+          onChanged={() => { setModal({ kind: 'closed' }); handleProposalChanged(); }}
         />
       )}
     </>
